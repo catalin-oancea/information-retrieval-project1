@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>DocuSearch</title>
+
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <script>let $ = require('jquery');</script>
+        <script>require('popper.js');</script>
+        <script>require('bootstrap');</script>
+
+        <style>
+            @-webkit-keyframes placeHolderShimmer{
+                0%{
+                    background-position:-468px 0
+                }
+                100%{
+                    background-position:468px 0
+                }
+            }
+
+            @keyframes placeHolderShimmer{
+                0%{
+                    background-position:-468px 0
+                }
+                100%{
+                    background-position:468px 0
+                }
+            }
+
+            @keyframes moveSearchUp{
+                0%{
+                    margin-top: 200px;
+                }
+                100%{
+                    margin-top: 25px;
+                }
+            }
+
+            @keyframes moveSearchDown{
+                0%{
+                    margin-top: 25px;
+                }
+                100%{
+                    margin-top: 200px;
+                }
+            }        
+
+            body {
+                background-color: #e9eaed;
+            }
+
+            .timeline-wrapper {
+                background-color: #e9eaed;
+                color: #141823;
+                padding: 20px;
+            }
+
+            .timeline-item {
+                background: #fff;
+                border: 1px solid;
+                border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+                border-radius: 3px;
+                padding: 12px;
+                margin: 0 auto;
+                margin-bottom: 8px;
+                max-width: 472px;
+                min-height: 150px;
+            }
+
+            .search-bar {
+                margin: 0 auto;
+                margin-bottom: 10px;
+                margin-top: 200px;
+                max-width: 472px;
+            }
+
+            .animated-background {
+                -webkit-animation-duration: 1s;
+                animation-duration: 1s;
+                -webkit-animation-fill-mode: forwards;
+                animation-fill-mode: forwards;
+                -webkit-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+                -webkit-animation-name: placeHolderShimmer;
+                animation-name: placeHolderShimmer;
+                -webkit-animation-timing-function: linear;
+                animation-timing-function: linear;
+                background: #f6f7f8;
+                background: #eeeeee;
+                background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee));
+                background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+                background: linear-gradient(to right,  #eeeeee 8%,#dddddd 18%,#eeeeee 33%);
+                -webkit-background-size: 800px 104px;
+                background-size: 800px 104px;
+                height: 96px;
+                position: relative;
+            }
+
+            .move-search-up {
+                animation-duration: 0.2s;
+                animation-fill-mode: forwards;
+                animation-iteration-count: 1;
+                animation-name: moveSearchUp;
+                animation-timing-function: linear;
+            }
+
+            .move-search-down {
+                animation-duration: 0.2s;
+                animation-fill-mode: forwards;
+                animation-iteration-count: 1;
+                animation-name: moveSearchDown;
+                animation-timing-function: linear;
+            }
+
+            .background-masker {
+                background: #fff;
+                position: absolute;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+            .outlined .background-masker {
+                border: 1px solid #ddd;
+            }
+
+
+            .outlined:hover .background-masker {
+                border: none;
+            }
+
+            .outlined:hover .background-masker:hover {
+                border: 1px solid #ccc;
+                z-index: 1;
+            }
+
+            .background-masker.header-top,
+            .background-masker.header-bottom,
+            .background-masker.subheader-bottom {
+                top: 0;
+                left: 40px;
+                right: 0;
+                height: 10px;
+            }
+
+            .background-masker.header-left,
+            .background-masker.subheader-left,
+            .background-masker.header-right,
+            .background-masker.subheader-right {
+                top: 10px;
+                left: 40px;
+                height: 8px;
+                width: 10px;
+            }
+
+            .background-masker.header-bottom {
+                top: 18px;
+                height: 6px;
+            }
+
+            .background-masker.subheader-left,
+            .background-masker.subheader-right {
+                top: 24px;
+                height: 6px;
+            }
+
+
+            .background-masker.header-right,
+            .background-masker.subheader-right {
+                width: auto;
+                left: 300px;
+                right: 0;
+            }
+
+            .background-masker.subheader-right {
+                left: 230px;
+            }
+
+            .background-masker.subheader-bottom {
+                top: 30px;
+                height: 10px;
+            }
+
+            .background-masker.content-top,
+            .background-masker.content-second-line,
+            .background-masker.content-third-line,
+            .background-masker.content-second-end,
+            .background-masker.content-third-end,
+            .background-masker.content-first-end {
+                top: 40px;
+                left: 0;
+                right: 0;
+                height: 6px;
+            }
+
+            .background-masker.content-top {
+                height:20px;
+            }
+
+            .background-masker.content-first-end,
+            .background-masker.content-second-end,
+            .background-masker.content-third-end{
+                width: auto;
+                left: 380px;
+                right: 0;
+                top: 60px;
+                height: 8px;
+            }
+
+            .background-masker.content-second-line  {
+                top: 68px;
+            }
+
+            .background-masker.content-second-end {
+                left: 420px;
+                top: 74px;
+            }
+
+            .background-masker.content-third-line {
+                top: 82px;
+            }
+
+            .background-masker.content-third-end {
+                left: 300px;
+                top: 88px;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .visible {
+                display: block;
+            }
+        </style>
+        <script>
+            $(document).ready(function() {
+                $('#search_input').bind("search",function(e){
+                    $(".search-bar").removeClass("move-search-down");
+                    $(".search-bar").addClass("move-search-up");
+                    $(".timeline-wrapper").removeClass("hidden");
+                    $(".loading-results").removeClass("hidden")
+                    $(".results").addClass("hidden");
+
+                    setTimeout(function(){
+                        $(".loading-results").addClass("hidden")
+                        $(".results").removeClass("hidden");
+                    }, 850);
+                });
+
+                $('#search_input').bind("empty_search",function(e){
+                    $(".search-bar").removeClass("move-search-up");
+                    $(".search-bar").addClass("move-search-down");
+                    $(".timeline-wrapper").addClass("hidden");
+                });
+
+                $('#search_input').keyup(function(e) {
+                    if(e.keyCode === 13 && $('#search_input').val() !== ''){
+                        $(this).trigger("search");
+                    } else if (e.keyCode === 13 && $('#search_input').val() === '') {
+                        console.log("here");
+                        $(this).trigger("empty_search");
+                    }
+                });
+            });
+
+        </script>
+    </head>
+    <body>
+
+        <div class="search-bar move-search-down">
+            <span style="font-size: 25px;"><b>Docu</b>Search</span>
+            <input class="form-control form-control-lg" type="text" placeholder="Type your query here" id="search_input">
+        </div>
+
+        <div class="timeline-wrapper hidden">
+            <div class="loading-results">
+                <div class="timeline-item">
+                    <div class="animated-background facebook">
+                        <div class="background-masker header-top"></div>
+                        <div class="background-masker header-left"></div>
+                        <div class="background-masker header-right"></div>
+                        <div class="background-masker header-bottom"></div>
+                        <div class="background-masker subheader-left"></div>
+                        <div class="background-masker subheader-right"></div>
+                        <div class="background-masker subheader-bottom"></div>
+                        <div class="background-masker content-top"></div>
+                        <div class="background-masker content-first-end"></div>
+                        <div class="background-masker content-second-line"></div>
+                        <div class="background-masker content-second-end"></div>
+                        <div class="background-masker content-third-line"></div>
+                        <div class="background-masker content-third-end"></div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="animated-background facebook">
+                        <div class="background-masker header-top"></div>
+                        <div class="background-masker header-left"></div>
+                        <div class="background-masker header-right"></div>
+                        <div class="background-masker header-bottom"></div>
+                        <div class="background-masker subheader-left"></div>
+                        <div class="background-masker subheader-right"></div>
+                        <div class="background-masker subheader-bottom"></div>
+                        <div class="background-masker content-top"></div>
+                        <div class="background-masker content-first-end"></div>
+                        <div class="background-masker content-second-line"></div>
+                        <div class="background-masker content-second-end"></div>
+                        <div class="background-masker content-third-line"></div>
+                        <div class="background-masker content-third-end"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="results hidden">
+                <div class="timeline-item">
+                    <div class="row">
+                        <div class="col-2"><img src="./icons/doc.png" alt="DOC" width="100%"></div>
+                        <div class="col-10">
+                            <b style="color: gray;">Bucharest.doc</b>
+                            <p style="color: silver; font-size: 80%; font-style: italic;">Last indexed: 13th of March 2019 14:23</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr style="margin-top: 3px; margin-bottom: 5px;">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="color: grey;">
+                                <b><u>Bucharest</u></b> was first mentioned in documents in 1459. It became the capital of <b><u>Romania</u></b> in 1862 and is the centre of <b><u>Romanian</u></b> media, culture, and art.
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="row">
+                        <div class="col-2"><img src="./icons/pdf.png" alt="PDF" width="100%"></div>
+                        <div class="col-10">
+                            <b style="color: gray;">San Francisco.pdf</b>
+                            <p style="color: silver; font-size: 80%; font-style: italic;">Last indexed: 13th of March 2019 14:23</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr style="margin-top: 3px; margin-bottom: 5px;">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="color: grey;">
+                            <b><u>San Francisco</u></b>, officially the City and County of <b><u>San Francisco</u></b>, is the cultural, commercial, and financial center of Northern <b><u>California</u></b>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
