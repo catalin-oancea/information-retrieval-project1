@@ -118,11 +118,11 @@ public final class MyRomanianAnalyzer extends StopwordAnalyzerBase {
     protected TokenStreamComponents createComponents(String fieldName) {
         final Tokenizer source = new StandardTokenizer();
         TokenStream result = new LowerCaseFilter(source);
-        result = new StopFilter(result, stopwords);
         if(!stemExclusionSet.isEmpty())
             result = new SetKeywordMarkerFilter(result, stemExclusionSet);
         result = new SnowballFilter(result, new RomanianStemmer());
         result = new ASCIIFoldingFilter(result);
+        result = new StopFilter(result, stopwords);
         return new TokenStreamComponents(source, result);
     }
 

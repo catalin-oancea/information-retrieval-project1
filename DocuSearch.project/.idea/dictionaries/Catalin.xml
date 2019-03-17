@@ -2,6 +2,7 @@
   <dictionary name="Catalin">
     <words>
       <w>consts</w>
+      <w>docu</w>
       <w>stopwords</w>
       <w>tika</w>
     </words>

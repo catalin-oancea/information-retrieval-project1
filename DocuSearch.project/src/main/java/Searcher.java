@@ -15,13 +15,27 @@ import java.nio.file.Paths;
 
 public class Searcher {
     private Analyzer analyzer;
+    private String invertedIndexPath;
 
-    Searcher() {
-        this.analyzer = new MyRomanianAnalyzer(null);
+    /**
+     * Constructor.
+     *
+     * @param invertedIndexPath Path to the inverted index.
+     */
+    Searcher(String invertedIndexPath) {
+        this.invertedIndexPath = invertedIndexPath;
+        this.analyzer = new MyRomanianAnalyzer();
     }
 
+    /**
+     * Used to search the <code>query</code> string in the inverted index.
+     *
+     * @param query Query string that is searched in the inverted index.
+     * @throws IOException Thrown when a file is not found or when AccessError on a file.
+     * @throws ParseException Thrown when the query string cannot be parsed.
+     */
     public void query(String query) throws IOException, ParseException {
-        Directory dir = FSDirectory.open(Paths.get(Consts.INDEX_PATH));
+        Directory dir = FSDirectory.open(Paths.get(this.invertedIndexPath));
         IndexReader reader = DirectoryReader.open(dir);
         IndexSearcher indexSearcher = new IndexSearcher(reader);
 

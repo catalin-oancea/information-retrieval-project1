@@ -1,4 +1,5 @@
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.ro.RomanianAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -14,21 +15,32 @@ import java.io.*;
 import java.nio.file.Paths;
 
 public class Indexer {
+    private String invertedIndexPath;
+    private String docsPath;
     private Analyzer analyzer;
 
-    Indexer() {
-        this.analyzer = new MyRomanianAnalyzer(null);
+    /**
+     * Constructor.
+     *
+     * @param docsPath Path to the docs to be indexed.
+     * @param invertedIndexPath Path to where the inverted index should be stored.
+     */
+    Indexer(String docsPath, String invertedIndexPath) {
+        this.invertedIndexPath = invertedIndexPath;
+        this.docsPath = docsPath;
+        this.analyzer = new MyRomanianAnalyzer();
     }
 
     /**
      * This method is initializing the index writer and starts the indexing process from <code>Consts.DOCS_PATH</code>.
+     *
      * @throws IOException Thrown when <code>Consts.INDEX_PATH</code> path does not exist.
      * @throws SAXException Thrown when <code>indexDocs</code> throws <code>SAXException</code>.
      * @throws TikaException Thrown when <code>indexDocs</code> throws <code>TikaException</code>.
      */
     public void generateIndex() throws IOException, SAXException, TikaException{
-        File docsDir = new File(Consts.DOCS_PATH);
-        Directory dir = FSDirectory.open(Paths.get(Consts.INDEX_PATH));
+        File docsDir = new File(this.docsPath);
+        Directory dir = FSDirectory.open(Paths.get(this.invertedIndexPath));
         IndexWriterConfig iwc = new IndexWriterConfig(this.analyzer);
 
         iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
@@ -58,10 +70,8 @@ public class Indexer {
                 }
             }
         } else {
-            String content = DocumentParser.parseFile(file.getName());
+            String content = DocumentParser.parseFile(file.getAbsolutePath());
             Document doc = new Document();
-            System.out.println(content);
-
 
             doc.add(new StringField(Consts.FIELD_PATH_NAME, file.getPath(), Field.Store.YES));
             doc.add(new TextField(Consts.FIELD_CONTENTS_NAME, content, Field.Store.YES));

@@ -4,6 +4,7 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,7 +24,7 @@ public class DocumentParser {
         BodyContentHandler handler = new BodyContentHandler();
         Metadata metadata = new Metadata();
 
-        try (InputStream stream = DocumentParser.class.getResourceAsStream("docs/"+filePath)) {
+        try (InputStream stream = new FileInputStream(filePath)) {
             parser.parse(stream, handler, metadata);
             return handler.toString();
         }

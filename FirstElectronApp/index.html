@@ -8,7 +8,6 @@
         <script>let $ = require('jquery');</script>
         <script>require('popper.js');</script>
         <script>require('bootstrap');</script>
-
         <style>
             @-webkit-keyframes placeHolderShimmer{
                 0%{
@@ -235,6 +234,38 @@
             }
         </style>
         <script>
+            const electron = require('electron');
+            const ipc = electron.ipcRenderer;
+
+            function buildResultsHtmlContent(results) {
+                return results.map(result => {
+                    return `
+                    <div class="timeline-item">
+                        <div class="row">
+                            <div class="col-2">
+                                <img src="./icons/`+result.file_extension+`.png" width="100%">
+                            </div>
+                            <div class="col-10">
+                                <b style="color: gray;">`+result.document_name+`</b>
+                                <p style="color: silver; font-size: 80%; font-style: italic;">
+                                    Last indexed: 13th of March 2019 14:23
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <hr style="margin-top: 3px; margin-bottom: 5px;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="color: grey;">
+                                <span style="white-space:nowrap; font-size: 12px;">`+result.document_path+`</span>
+                            </div>
+                        </div>
+                    </div>`
+                })
+            }
+
             $(document).ready(function() {
                 $('#search_input').bind("search",function(e){
                     $(".search-bar").removeClass("move-search-down");
@@ -246,7 +277,7 @@
                     setTimeout(function(){
                         $(".loading-results").addClass("hidden")
                         $(".results").removeClass("hidden");
-                    }, 850);
+                    }, 950);
                 });
 
                 $('#search_input').bind("empty_search",function(e){
@@ -257,7 +288,14 @@
 
                 $('#search_input').keyup(function(e) {
                     if(e.keyCode === 13 && $('#search_input').val() !== ''){
-                        $(this).trigger("search");
+                        
+                        ipc.send('search', {'query': $('#search_input').val()});
+                        ipc.on('search-results-available', (event, result) => {
+                            resultsHtmlContent = buildResultsHtmlContent(result);
+                            $(".results").html(resultsHtmlContent);
+                            $(this).trigger("search");
+                            console.log(result);
+                        })
                     } else if (e.keyCode === 13 && $('#search_input').val() === '') {
                         console.log("here");
                         $(this).trigger("empty_search");
@@ -312,44 +350,6 @@
                 </div>
             </div>
             <div class="results hidden">
-                <div class="timeline-item">
-                    <div class="row">
-                        <div class="col-2"><img src="./icons/doc.png" alt="DOC" width="100%"></div>
-                        <div class="col-10">
-                            <b style="color: gray;">Bucharest.doc</b>
-                            <p style="color: silver; font-size: 80%; font-style: italic;">Last indexed: 13th of March 2019 14:23</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <hr style="margin-top: 3px; margin-bottom: 5px;">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12" style="color: grey;">
-                                <b><u>Bucharest</u></b> was first mentioned in documents in 1459. It became the capital of <b><u>Romania</u></b> in 1862 and is the centre of <b><u>Romanian</u></b> media, culture, and art.
-                        </div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="row">
-                        <div class="col-2"><img src="./icons/pdf.png" alt="PDF" width="100%"></div>
-                        <div class="col-10">
-                            <b style="color: gray;">San Francisco.pdf</b>
-                            <p style="color: silver; font-size: 80%; font-style: italic;">Last indexed: 13th of March 2019 14:23</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <hr style="margin-top: 3px; margin-bottom: 5px;">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12" style="color: grey;">
-                            <b><u>San Francisco</u></b>, officially the City and County of <b><u>San Francisco</u></b>, is the cultural, commercial, and financial center of Northern <b><u>California</u></b>.
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </body>
