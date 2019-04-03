@@ -83,7 +83,6 @@ public class SwingIndexingPanel extends JPanel {
             }
         });
 
-
         setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();

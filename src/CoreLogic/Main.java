@@ -16,6 +16,7 @@ import SwingInterface.SwingMainFrame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,15 +121,11 @@ public class Main {
         return options;
     }
 
-    private static void printResults(HashMap<String, Float> result) {
+    private static void printResults(ArrayList<Result> result) {
         int i = 0;
-
-        for(Map.Entry<String, Float> entry : result.entrySet()) {
-            i++;
-            String key = entry.getKey();
-            Float value = entry.getValue();
-            
-            System.out.println(i + ") [Score: "+value +"]\n    [Path: "+key+"]\n\n");
+        for(Result entry : result) {
+            i++; 
+            System.out.println(i + ") [Score: "+entry.getScore() +"]\n    [Path: "+entry.getFilePath()+"]\n\n");
         }
 
         if (result.size() == 0) {

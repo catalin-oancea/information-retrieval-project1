@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-
+import CoreLogic.Result;
 import CoreLogic.Searcher;
 
 public class SwingSearchingPanel extends JPanel {
@@ -34,7 +35,7 @@ public class SwingSearchingPanel extends JPanel {
                 String indexPath = indexingPanel.indexPathField.getText();
                 Searcher searcher = new Searcher(indexPath);
                 String query = searchQueryField.getText();
-                HashMap<String, Float> result;
+                ArrayList<Result> result;
 
                 try {
                     if (query.toString() != "") {
@@ -42,12 +43,9 @@ public class SwingSearchingPanel extends JPanel {
                         int i = 0;
                         resultsArea.setText("");
 
-                        for(Map.Entry<String, Float> entry : result.entrySet()) {
+                        for(Result entry : result) {
                             i++;
-                            String key = entry.getKey();
-                            Float value = entry.getValue();
-                            
-                            resultsArea.append(i + ") [Score: "+value +"]\n    [Path: "+key+"]\n\n");
+                            resultsArea.append(i + ") [Score: "+entry.getScore() +"]\n    [Path: "+entry.getFilePath()+"]\n\n");
                         }
 
                         if (result.size() == 0) {

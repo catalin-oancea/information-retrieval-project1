@@ -14,6 +14,7 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Searcher {
@@ -34,15 +35,15 @@ public class Searcher {
      * Used to search the <code>query</code> string in the inverted index.
      *
      * @param query Query string that is searched in the inverted index.
-     * @return Returns a HashMap where the key is the path to the file (matching the query) and the value is the score of that file.
+     * @return Returns an array with the results.
      * @throws IOException Thrown when a file is not found or when AccessError on a file.
      * @throws ParseException Thrown when the query string cannot be parsed.
      */
-    public HashMap<String, Float> query(String query) throws IOException, ParseException {
+    public ArrayList<Result> query(String query) throws IOException, ParseException {
         Directory dir = FSDirectory.open(Paths.get(this.invertedIndexPath));
         IndexReader reader = DirectoryReader.open(dir);
         IndexSearcher indexSearcher = new IndexSearcher(reader);
-        HashMap<String, Float> results = new HashMap<>();
+        ArrayList<Result> results = new ArrayList<>();
 
         QueryParser parser = new QueryParser("contents", this.analyzer);
         Query q = parser.parse(query);
@@ -50,7 +51,7 @@ public class Searcher {
 
         for (ScoreDoc hit : hits) {
             Document hitDoc = indexSearcher.doc(hit.doc);
-            results.put(hitDoc.get("file_path"), hit.score);
+            results.add(new Result(hitDoc.get("file_path"), hit.score));
         }
 
         reader.close();

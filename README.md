@@ -20,6 +20,7 @@
         * `Indexer.java` - Uses `DocumentParser.java` to parse a each file from the `../data/documents` folder. After the parsing is done, it uses Lucene to generate and write the index (in the `../data/index` directory).
         * `Main.java` - Triggers the functionality from `Indexer.java` or `Searcher.java` (depending on the user input).
         * `MyRomanianAnalyzer.java` - Duplicate of `RomanianAnalyzer` with a small change (getting rid of diacritics after stemming phase).
+        * `Result.java` - Used as a DTO, to return the results from the searcher.
         * `Searcher.java` - Used to search the inverted index. Accepts a path to the inverted index and a query string.
     * `SwingInterface` - Contains UI implementation
         * `SwingMainFrame.java` - This is the main frame, which has a border layout. On the left side (`WEST`) there is the `SwingIndexingPanel`. On the right side (`CENTER`) there is the `SwingSearchingPanel`.
@@ -55,14 +56,14 @@ When using command line, one of the following flags must be present:
 **Examples on how to run the project from command line**
 * Generating an index:
 ```bash
-ant run -Dargs="--indexFiles -d /Users/Catalin/Desktop/Projects/information_retrieval_p1/data/documents -i /Users/Catalin/Desktop/Projects/information_retrieval_p1/data/index"
+ant run -Dargs="--indexFiles -d /Users/Catalin/Desktop/Projects/information-retrieval-p1/data/documents -i /Users/Catalin/Desktop/Projects/information-retrieval-p1/data/index"
 ```
 * Performing a search on the inverted index:
 ```bash
-ant run -Dargs="--queryFiles -i /Users/Catalin/Desktop/Projects/information_retrieval_p1/data/index -q 'căruță'"
+ant run -Dargs="--queryFiles -i /Users/Catalin/Desktop/Projects/information-retrieval-p1/data/index -q 'căruță'"
 ```
 * Interactive search on the inverted index (after one search, you can type another query). The execution stops when you type `exit`:
 
 ```bash
-ant run -Dargs="--queryLoop -i /Users/Catalin/Desktop/Projects/information_retrieval_p1/data/index"
+ant run -Dargs="--queryLoop -i /Users/Catalin/Desktop/Projects/information-retrieval-p1/data/index"
 ```
