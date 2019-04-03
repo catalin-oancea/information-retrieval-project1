@@ -14,7 +14,7 @@
     * `documents` - folder where the documents to be indexed will reside.
     * `index` - folder that will contain the computed inverted index for the documents in the `documents` folder above.
 * `resources` - this folder contains a file (`stopwords.txt`) that stores a list of romanian stopwords (without diacritcs)
-* `src` - this folder contains 6 java files:
+* `src`:
     * `CoreLogic` - contains the implementation for this assignment (Searcher, Indexer, Documnet parser, Analyzer)
         * `DocumentParser.java` - Uses Apache Tika to get the contents of a document from a speciffic path.
         * `Indexer.java` - Uses `DocumentParser.java` to parse a each file from the `../data/documents` folder. After the parsing is done, it uses Lucene to generate and write the index (in the `../data/index` directory).
@@ -22,9 +22,9 @@
         * `MyRomanianAnalyzer.java` - Duplicate of `RomanianAnalyzer` with a small change (getting rid of diacritics after stemming phase).
         * `Searcher.java` - Used to search the inverted index. Accepts a path to the inverted index and a query string.
     * `SwingInterface` - Contains UI implementation
-        * `SwingMainFrame` - This is the main frame, which has a border layout. On the left side (`WEST`) there is the `SwingIndexingPanel`. On the right side (`CENTER`) there is the `SwingSearchingPanel`.
-        * `SwingIndexingPanel` - This panel contains two textfields (one where you can pick the path for docs folder, and one where you can pick the path to where the inverted index will be stored). You cannot change the fields manually, but by using the buttons on their right.
-        * `SwingSearchingPanel` - This panel contains a textfield (used to type in your query), a button (used to trigger the search), and a textarea (used to display the results of your search).
+        * `SwingMainFrame.java` - This is the main frame, which has a border layout. On the left side (`WEST`) there is the `SwingIndexingPanel`. On the right side (`CENTER`) there is the `SwingSearchingPanel`.
+        * `SwingIndexingPanel.java` - This panel contains two textfields (one where you can pick the path for docs folder, and one where you can pick the path to where the inverted index will be stored). You cannot change the fields manually, but by using the buttons on their right.
+        * `SwingSearchingPanel.java` - This panel contains a textfield (used to type in your query), a button (used to trigger the search), and a textarea (used to display the results of your search).
 * `lib` - In this folder the dependencies (`.jar` files) should be present:
     * `lucene-8.0.0` - Download from: http://www.apache.org/dyn/closer.lua/lucene/java/8.0.0/lucene-8.0.0.zip
     * `tika-app-1.20.jar` - Download from: https://www.apache.org/dyn/closer.cgi/tika/tika-app-1.20.jar
