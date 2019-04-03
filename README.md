@@ -25,7 +25,9 @@
         * `SwingMainFrame` - This is the main frame, which has a border layout. On the left side (`WEST`) there is the `SwingIndexingPanel`. On the right side (`CENTER`) there is the `SwingSearchingPanel`.
         * `SwingIndexingPanel` - This panel contains two textfields (one where you can pick the path for docs folder, and one where you can pick the path to where the inverted index will be stored). You cannot change the fields manually, but by using the buttons on their right.
         * `SwingSearchingPanel` - This panel contains a textfield (used to type in your query), a button (used to trigger the search), and a textarea (used to display the results of your search).
-* `lib` - In this folder the dependencies (`.jar` files) should be present.
+* `lib` - In this folder the dependencies (`.jar` files) should be present:
+    * `lucene-8.0.0` - Download from: http://www.apache.org/dyn/closer.lua/lucene/java/8.0.0/lucene-8.0.0.zip
+    * `tika-app-1.20.jar` - Download from: https://www.apache.org/dyn/closer.cgi/tika/tika-app-1.20.jar
 
 ## **How to run the project**
 ### **Using the User Interface (Swing)**
